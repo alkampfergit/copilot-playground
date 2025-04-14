@@ -1,0 +1,54 @@
+{
+  "classes": [
+    {
+      "name": "Warrior",
+      "description": "Masters of combat, proficient with various weapons and armor.",
+      "primary_stats": ["STR", "CON"],
+      "abilities": ["Bonus to melee damage", "Can use heavier armor and weapons", "May have special combat maneuvers"],
+      "stat_bonuses": {
+        "hp": 5,
+        "mp": -5
+      }
+    },
+    {
+      "name": "Mage",
+      "description": "Wielders of arcane magic, capable of casting powerful spells but physically frail.",
+      "primary_stats": ["INT", "WIS"],
+      "abilities": ["Can learn and cast a wide variety of spells", "Bonus to spell damage/effectiveness"],
+      "stat_bonuses": {
+        "hp": -5,
+        "mp": 10
+      }
+    },
+    {
+      "name": "Rogue",
+      "description": "Skilled in stealth, traps, and precision attacks.",
+      "primary_stats": ["DEX", "CHA"],
+      "abilities": ["Bonus to stealth checks", "Lockpicking", "Trap disarming", "May have backstab/sneak attack"],
+      "stat_bonuses": {
+        "hp": 0,
+        "mp": 0
+      }
+    },
+    {
+      "name": "Cleric",
+      "description": "Divine spellcasters who heal allies and smite foes.",
+      "primary_stats": ["WIS", "CON"],
+      "abilities": ["Can cast healing and support spells", "Turn undead", "Proficient with some armor and blunt weapons"],
+      "stat_bonuses": {
+        "hp": 2,
+        "mp": 5
+      }
+    },
+    {
+      "name": "Ranger",
+      "description": "Masters of the wilderness, skilled with bows and tracking.",
+      "primary_stats": ["DEX", "WIS"],
+      "abilities": ["Bonus to ranged attacks", "Tracking", "Survival skills", "May have an animal companion"],
+      "stat_bonuses": {
+        "hp": 2,
+        "mp": 0
+      }
+    }
+  ]
+}

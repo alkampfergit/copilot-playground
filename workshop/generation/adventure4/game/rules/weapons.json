@@ -1,0 +1,125 @@
+{
+  "weapons": [
+    {
+      "name": "Dagger",
+      "description": "A small, concealable blade.",
+      "damage": "1-4",
+      "damage_type": "Piercing",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 1,
+      "class_restriction": [],
+      "weight": 1
+    },
+    {
+      "name": "Short Sword",
+      "description": "A balanced one-handed sword.",
+      "damage": "1-6",
+      "damage_type": "Slashing",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 3,
+      "class_restriction": [],
+      "weight": 3
+    },
+    {
+      "name": "Long Sword",
+      "description": "A versatile two-handed or one-handed sword.",
+      "damage": "1-8",
+      "damage_type": "Slashing",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 5,
+      "class_restriction": ["Warrior", "Ranger"],
+      "weight": 5
+    },
+    {
+      "name": "Great Axe",
+      "description": "A heavy, two-handed axe.",
+      "damage": "1-12",
+      "damage_type": "Slashing",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 7,
+      "class_restriction": ["Warrior"],
+      "weight": 10
+    },
+    {
+      "name": "Mace",
+      "description": "A blunt weapon effective against armor.",
+      "damage": "1-6",
+      "damage_type": "Bludgeoning",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 4,
+      "class_restriction": ["Warrior", "Cleric"],
+      "weight": 6
+    },
+    {
+      "name": "Quarterstaff",
+      "description": "A simple wooden staff.",
+      "damage": "1-6",
+      "damage_type": "Bludgeoning",
+      "category": "Attack",
+      "type": "Melee",
+      "min_str": 2,
+      "class_restriction": [],
+      "weight": 4
+    },
+    {
+      "name": "Short Bow",
+      "description": "A light ranged weapon. Requires arrows.",
+      "damage": "1-6",
+      "damage_type": "Piercing",
+      "category": "Attack",
+      "type": "Ranged",
+      "min_str": 3,
+      "min_dex": 4,
+      "class_restriction": ["Ranger", "Rogue", "Warrior"],
+      "weight": 2
+    },
+    {
+      "name": "Long Bow",
+      "description": "A powerful ranged weapon. Requires arrows.",
+      "damage": "1-8",
+      "damage_type": "Piercing",
+      "category": "Attack",
+      "type": "Ranged",
+      "min_str": 5,
+      "min_dex": 6,
+      "class_restriction": ["Ranger", "Warrior"],
+      "weight": 4
+    },
+    {
+      "name": "Buckler",
+      "description": "A small shield strapped to the forearm.",
+      "defense_bonus_ac": 1,
+      "category": "Defense",
+      "type": "Shield",
+      "min_str": 2,
+      "class_restriction": ["Rogue", "Warrior", "Ranger"],
+      "weight": 2
+    },
+    {
+      "name": "Medium Shield",
+      "description": "A standard shield offering moderate protection.",
+      "defense_bonus_ac": 2,
+      "category": "Defense",
+      "type": "Shield",
+      "min_str": 4,
+      "class_restriction": ["Warrior", "Cleric", "Ranger"],
+      "weight": 6
+    },
+    {
+      "name": "Tower Shield",
+      "description": "A large, heavy shield providing maximum coverage.",
+      "defense_bonus_ac": 3,
+      "dex_penalty": -1, 
+      "category": "Defense",
+      "type": "Shield",
+      "min_str": 7,
+      "class_restriction": ["Warrior"],
+      "weight": 12
+    }
+  ]
+}

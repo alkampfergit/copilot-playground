@@ -1,1 +1,1 @@
-Please follow the instruction in prompt.md to generate specifications for the game. Proceed step by step
+Follow the instruction of prompt.md to implement a text based game. Try to be more detailed as possible when following the intructions

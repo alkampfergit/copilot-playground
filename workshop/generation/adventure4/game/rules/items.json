@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "name": "Torch",
+      "description": "Provides light in dark areas for a limited time.",
+      "effect": "Illuminates surroundings. Consumed over time.",
+      "weight": 1,
+      "type": "light_source",
+      "consumable": true
+    },
+    {
+      "name": "Rope (50ft)",
+      "description": "A sturdy length of rope.",
+      "effect": "Can be used for climbing, tying things, etc.",
+      "weight": 5,
+      "type": "tool"
+    },
+    {
+      "name": "Backpack",
+      "description": "Increases carrying capacity.",
+      "effect": "Adds +50 to carrying capacity.",
+      "weight": 2,
+      "type": "container"
+    },
+    {
+      "name": "Rations (1 day)",
+      "description": "Preserved food providing sustenance.",
+      "effect": "Prevents hunger penalties. May restore minor HP/SP.",
+      "weight": 1,
+      "type": "food",
+      "consumable": true
+    },
+    {
+      "name": "Waterskin",
+      "description": "Holds water.",
+      "effect": "Prevents thirst penalties. Refillable.",
+      "weight": 2,
+      "type": "container",
+      "consumable": true
+    },
+    {
+      "name": "Flint and Steel",
+      "description": "Used to start fires.",
+      "effect": "Can light torches, campfires, etc.",
+      "weight": 0.5,
+      "type": "tool"
+    },
+    {
+      "name": "Healing Potion (Minor)",
+      "description": "A vial containing a red liquid.",
+      "effect": "Restores 10 HP.",
+      "weight": 0.5,
+      "type": "potion",
+      "consumable": true
+    },
+    {
+      "name": "Mana Potion (Minor)",
+      "description": "A vial containing a blue liquid.",
+      "effect": "Restores 10 MP.",
+      "weight": 0.5,
+      "type": "potion",
+      "consumable": true
+    },
+    {
+      "name": "Lockpicks",
+      "description": "Tools used for picking locks.",
+      "effect": "Allows attempting to open locked doors/chests. Success depends on DEX/skills. May break.",
+      "weight": 0.5,
+      "type": "tool"
+    },
+    {
+      "name": "Gold Coins",
+      "description": "Standard currency.",
+      "effect": "Used for trade.",
+      "weight": 0.01,
+      "type": "currency"
+    }
+  ]
+}

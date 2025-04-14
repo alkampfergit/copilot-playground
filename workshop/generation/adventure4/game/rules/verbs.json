@@ -1,0 +1,74 @@
+{
+  "verbs": [
+    {
+      "name": "look",
+      "description": "Describes the current location or a specific object.",
+      "usage": ["look", "look at [object]"]
+    },
+    {
+      "name": "go",
+      "description": "Moves the player in a specified direction (north, south, east, west, up, down).",
+      "usage": ["go [direction]"]
+    },
+    {
+      "name": "get",
+      "description": "Picks up an item from the location and adds it to the player's inventory.",
+      "usage": ["get [item]"]
+    },
+    {
+      "name": "drop",
+      "description": "Removes an item from the player's inventory and leaves it in the current location.",
+      "usage": ["drop [item]"]
+    },
+    {
+      "name": "inventory",
+      "description": "Lists the items currently held by the player.",
+      "usage": ["inventory", "inv"]
+    },
+    {
+      "name": "attack",
+      "description": "Initiates combat with an enemy using the equipped weapon.",
+      "usage": ["attack [enemy]"]
+    },
+    {
+      "name": "use",
+      "description": "Uses an item, either on the player or the environment.",
+      "usage": ["use [item]", "use [item] on [target]"]
+    },
+    {
+      "name": "talk",
+      "description": "Initiates a conversation with an NPC.",
+      "usage": ["talk to [NPC]"]
+    },
+    {
+      "name": "cast",
+      "description": "Casts a known spell.",
+      "usage": ["cast [spell] on [target]"]
+    },
+    {
+      "name": "examine",
+      "description": "Provides a more detailed description of an object or character.",
+      "usage": ["examine [object/character]"]
+    },
+    {
+      "name": "equip",
+      "description": "Equips a weapon or armor from the inventory.",
+      "usage": ["equip [item]"]
+    },
+    {
+      "name": "unequip",
+      "description": "Unequips a weapon or armor.",
+      "usage": ["unequip [item]"]
+    },
+    {
+      "name": "help",
+      "description": "Displays a list of available commands or information about a specific command.",
+      "usage": ["help", "help [command]"]
+    },
+    {
+      "name": "quit",
+      "description": "Exits the game.",
+      "usage": ["quit"]
+    }
+  ]
+}

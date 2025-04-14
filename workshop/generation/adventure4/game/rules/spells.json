@@ -1,0 +1,118 @@
+{
+  "spells": [
+    {
+      "name": "Magic Missile",
+      "description": "Creates darts of magical energy.",
+      "effect_description": "Deals 1-4 force damage per missile. Auto-hits.",
+      "effect": {
+        "type": "damage",
+        "damage_type": "force",
+        "amount": "1-4",
+        "auto_hit": true
+      },
+      "mp_cost": 3,
+      "target": "Single Enemy",
+      "class": ["Mage"]
+    },
+    {
+      "name": "Light",
+      "description": "Creates a small light source.",
+      "effect_description": "Illuminates area like a torch for 1 hour.",
+      "effect": {
+        "type": "utility",
+        "utility_type": "light",
+        "duration_minutes": 60
+      },
+      "mp_cost": 1,
+      "target": "Point/Self",
+      "class": ["Mage", "Cleric"]
+    },
+    {
+      "name": "Fireball",
+      "description": "Hurls exploding fire.",
+      "effect_description": "Deals 6-16 fire damage in 10ft radius. DEX save for half.",
+      "effect": {
+        "type": "damage",
+        "damage_type": "fire",
+        "amount": "6-16",
+        "area_of_effect_radius_ft": 10,
+        "save": {
+          "stat": "DEX",
+          "effect": "half damage"
+        }
+      },
+      "mp_cost": 10,
+      "target": "Point (Area of Effect)",
+      "class": ["Mage"]
+    },
+    {
+      "name": "Heal Wounds (Minor)",
+      "description": "Mends injuries.",
+      "effect_description": "Restores 2-8 HP.",
+      "effect": {
+        "type": "heal",
+        "amount": "2-8"
+      },
+      "mp_cost": 4,
+      "target": "Single Ally/Self",
+      "class": ["Cleric", "Ranger"]
+    },
+    {
+      "name": "Shield",
+      "description": "Creates a temporary magical barrier.",
+      "effect_description": "Grants +4 AC for 1 minute or until hit.",
+      "effect": {
+        "type": "buff",
+        "stat": "AC",
+        "value": 4,
+        "duration_minutes": 1,
+        "condition": "until hit"
+      },
+      "mp_cost": 5,
+      "target": "Self",
+      "class": ["Mage"]
+    },
+    {
+      "name": "Bless",
+      "description": "Imbues allies with divine favor.",
+      "effect_description": "Grants +1 to attack rolls and saving throws for 1 minute.",
+      "effect": {
+        "type": "buff",
+        "stat": ["attack_roll", "saving_throw"],
+        "value": 1,
+        "duration_minutes": 1
+      },
+      "mp_cost": 6,
+      "target": "Allies in Area",
+      "class": ["Cleric"]
+    },
+    {
+      "name": "Detect Magic",
+      "description": "Reveals magical auras.",
+      "effect_description": "Sense magic items, spells, creatures nearby.",
+      "effect": {
+        "type": "utility",
+        "utility_type": "detection",
+        "detection_target": "magic"
+      },
+      "mp_cost": 2,
+      "target": "Self (Area Scan)",
+      "class": ["Mage", "Cleric", "Ranger"]
+    },
+    {
+      "name": "Sleep",
+      "description": "Sends creatures into magical slumber.",
+      "effect_description": "Affects 20 HP total of creatures, lowest HP first. Sleeping creatures are helpless.",
+      "effect": {
+        "type": "control",
+        "control_type": "sleep",
+        "hp_affected": 20,
+        "priority": "lowest_hp",
+        "condition": "helpless"
+      },
+      "mp_cost": 7,
+      "target": "Creatures in Area",
+      "class": ["Mage"]
+    }
+  ]
+}

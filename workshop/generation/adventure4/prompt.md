@@ -28,6 +28,8 @@ For each rule files in the game.rules, you should determine a json file that can
 
 The purpose is to generate a node.js application in the subdirectory game/app that is capable of running the rules detailed in all markdown file generated in the game/rules directory.
 
-For each rule file you have a json rule file, you should create a node.js file that is capable of reading the json file and implementing the rules in the game. Structure the node.js application in a way that we do not have all in a single file but you have multiple rule file.
+You should use typescript to implement the game. You should add a readme file that explain how to compile and run the game.
 
-Please add some unit test to verify that the rules are correctly implemented. The unit test should be in a separate directory called test and you should create a readme.md file in the test directory to explain how to run the unit test.
+For each rule file you have a json rule file, you should create a node.js file that is capable of reading the json file and implementing the rules in the game. Structure the node.js application in a way that we do not have all in a single file but you have multiple rule file. Try to implement all the rules of the corresponding file.
+
+For each node.js file implemented, create a test file to verify that the rules are correctly implemented. The unit test should be placed in a separate directory called test and you should create a readme.md file in the test directory to explain how to run the unit test.

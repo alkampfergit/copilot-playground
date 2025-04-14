@@ -1,0 +1,43 @@
+{
+  "characteristics": [
+    {"name": "Strength", "abbr": "STR", "description": "Physical power, affecting melee damage and carrying capacity.", "range": [1, 10]},
+    {"name": "Dexterity", "abbr": "DEX", "description": "Agility, affecting accuracy, dodging, and delicate tasks.", "range": [1, 10]},
+    {"name": "Constitution", "abbr": "CON", "description": "Endurance and health.", "range": [1, 10]},
+    {"name": "Intelligence", "abbr": "INT", "description": "Reasoning and memory, affecting spellcasting and problem-solving.", "range": [1, 10]},
+    {"name": "Wisdom", "abbr": "WIS", "description": "Perception and insight, affecting magic resistance and awareness.", "range": [1, 10]},
+    {"name": "Charisma", "abbr": "CHA", "description": "Force of personality, affecting social interactions.", "range": [1, 10]}
+  ],
+  "derived_stats": {
+    "hp": {
+      "name": "Health Points",
+      "description": "Damage a character can sustain.",
+      "calculation_rule": "10 + (CON * 2)",
+      "base_characteristic": "CON"
+    },
+    "mp": {
+      "name": "Mana Points",
+      "description": "Used for casting spells.",
+      "calculation_rule": "10 + floor(INT * 1.5)",
+      "base_characteristic": "INT"
+    },
+    "sp": {
+      "name": "Stamina Points",
+      "description": "Used for strenuous actions.",
+      "calculation_rule": "10 + CON + floor(STR / 2)",
+      "base_characteristic": ["CON", "STR"]
+    },
+    "ac": {
+      "name": "Armor Class",
+      "description": "How difficult a character is to hit.",
+      "calculation_rule": "10 + floor(DEX / 2)",
+      "base_characteristic": "DEX"
+    },
+    "carrying_capacity": {
+      "name": "Carrying Capacity",
+      "description": "How much weight a character can carry.",
+      "calculation_rule": "STR * 10",
+      "base_characteristic": "STR",
+      "unit": "weight units"
+    }
+  }
+}

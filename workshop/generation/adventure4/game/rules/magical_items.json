@@ -1,0 +1,108 @@
+{
+  "magical_items": [
+    {
+      "name": "Amulet of Health",
+      "description": "Radiates vitality.",
+      "effect_description": "Increases max HP by +10 OR grants +1 CON.",
+      "effect": {
+        "type": "stat_bonus",
+        "stat": "CON",
+        "value": 1 
+      },
+      "weight": 0.5,
+      "slot": "Neck",
+      "type": "amulet"
+    },
+    {
+      "name": "Ring of Protection",
+      "description": "Subtly deflects harm.",
+      "effect_description": "Grants +1 AC.",
+      "effect": {
+        "type": "stat_bonus",
+        "stat": "AC",
+        "value": 1
+      },
+      "weight": 0.1,
+      "slot": "Finger",
+      "type": "ring"
+    },
+    {
+      "name": "Boots of Speed",
+      "description": "Urges the wearer forward.",
+      "effect_description": "Increases movement speed or initiative. May grant extra move action (limited use).",
+      "effect": {
+        "type": "special",
+        "details": "Grants +1 initiative bonus"
+      },
+      "weight": 1,
+      "slot": "Feet",
+      "type": "boots"
+    },
+    {
+      "name": "Gloves of Strength",
+      "description": "Feel empowering.",
+      "effect_description": "Increases STR by +1.",
+      "effect": {
+        "type": "stat_bonus",
+        "stat": "STR",
+        "value": 1
+      },
+      "weight": 1,
+      "slot": "Hands",
+      "type": "gloves"
+    },
+    {
+      "name": "Wand of Magic Missiles",
+      "description": "Carved with arcane symbols.",
+      "effect_description": "Casts Magic Missile (1-4 force damage, auto-hit). 10 charges.",
+      "effect": {
+        "type": "cast_spell",
+        "spell_name": "Magic Missile",
+        "charges": 10,
+        "recharge": false
+      },
+      "weight": 1,
+      "slot": "Held",
+      "type": "wand"
+    },
+    {
+      "name": "Cloak of Elvenkind",
+      "description": "Shifts colors like foliage.",
+      "effect_description": "Grants +2 bonus to stealth checks.",
+      "effect": {
+        "type": "skill_bonus",
+        "skill": "Stealth",
+        "value": 2
+      },
+      "weight": 2,
+      "slot": "Back",
+      "type": "cloak"
+    },
+    {
+      "name": "Bag of Holding",
+      "description": "Extradimensional space inside.",
+      "effect_description": "Holds 250 weight units.",
+      "effect": {
+        "type": "container",
+        "capacity": 250
+      },
+      "weight": 5,
+      "slot": "Held/Carried",
+      "type": "bag"
+    },
+    {
+      "name": "Scroll of Fireball",
+      "description": "Parchment inscribed with runes.",
+      "effect_description": "Casts Fireball once, consumes scroll. May require INT check.",
+      "effect": {
+        "type": "cast_spell",
+        "spell_name": "Fireball",
+        "charges": 1,
+        "consumable": true
+      },
+      "weight": 0.1,
+      "slot": "Consumable",
+      "type": "scroll"
+    }
+  ]
+}
