@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect 4 Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-area {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            padding: 15px;
+            background-color: #2c3e50;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 8px;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ecf0f1;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .player-1 {
+            background: linear-gradient(135deg, #ff6b6b, #ee5253);
+            animation: dropAnimation 0.5s ease-out;
+        }
+
+        .player-2 {
+            background: linear-gradient(135deg, #48dbfb, #0abde3);
+            animation: dropAnimation 0.5s ease-out;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background-color: #ff9ff3;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #f368e0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .difficulty-selector {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .difficulty-selector select {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        @keyframes dropAnimation {
+            0% {
+                transform: translateY(-300px);
+                opacity: 0;
+            }
+            70% {
+                transform: translateY(10px);
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .winner-animation {
+            animation: winAnimation 1s infinite alternate;
+        }
+
+        @keyframes winAnimation {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+            }
+        }
+
+        .score-board {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-board h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .scores {
+            display: flex;
+            justify-content: space-around;
+            gap: 2rem;
+        }
+
+        .score {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Connect 4</h1>
+    
+    <div class="score-board">
+        <h2>Score</h2>
+        <div class="scores">
+            <div class="score">
+                <div>You</div>
+                <div id="player-score">0</div>
+            </div>
+            <div class="score">
+                <div>Computer</div>
+                <div id="computer-score">0</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="game-container">
+        <div class="status-area" id="status">Your turn! Click a column to drop a disc.</div>
+        <div class="board" id="board"></div>
+    </div>
+    
+    <div class="difficulty-selector">
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+            <option value="expert">Expert</option>
+        </select>
+    </div>
+    
+    <div class="controls">
+        <button id="new-game">New Game</button>
+    </div>
+
+    <script>
+        // Game constants
+        const ROWS = 6;
+        const COLS = 7;
+        const EMPTY = 0;
+        const PLAYER = 1;
+        const COMPUTER = 2;
+        const CONNECT_N = 4; // Number of discs to connect
+        
+        // Game state
+        let board = Array(ROWS).fill().map(() => Array(COLS).fill(EMPTY));
+        let gameOver = false;
+        let playerScore = 0;
+        let computerScore = 0;
+        let isThinking = false;
+        
+        // DOM elements
+        const boardElement = document.getElementById('board');
+        const statusElement = document.getElementById('status');
+        const newGameButton = document.getElementById('new-game');
+        const difficultySelect = document.getElementById('difficulty');
+        const playerScoreElement = document.getElementById('player-score');
+        const computerScoreElement = document.getElementById('computer-score');
+        
+        // Initialize the game board
+        function initBoard() {
+            boardElement.innerHTML = '';
+            for (let col = 0; col < COLS; col++) {
+                const column = document.createElement('div');
+                column.className = 'column';
+                column.dataset.col = col;
+                column.addEventListener('click', () => makeMove(col));
+                
+                for (let row = 0; row < ROWS; row++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    column.appendChild(cell);
+                }
+                
+                boardElement.appendChild(column);
+            }
+        }
+        
+        // Initialize game
+        function initGame() {
+            board = Array(ROWS).fill().map(() => Array(COLS).fill(EMPTY));
+            gameOver = false;
+            isThinking = false;
+            updateStatus("Your turn! Click a column to drop a disc.");
+            initBoard();
+        }
+        
+        // Make a move at the specified column
+        function makeMove(col) {
+            if (gameOver || isThinking) return;
+            
+            const row = getLowestEmptyRow(col);
+            if (row === -1) return; // Column is full
+            
+            // Place player's disc
+            board[row][col] = PLAYER;
+            updateCell(row, col, PLAYER);
+            
+            // Check if player wins
+            if (checkWin(row, col, PLAYER)) {
+                gameOver = true;
+                playerScore++;
+                playerScoreElement.textContent = playerScore;
+                updateStatus("You win! 🎉");
+                highlightWinningCells();
+                return;
+            }
+            
+            // Check if board is full (draw)
+            if (isBoardFull()) {
+                gameOver = true;
+                updateStatus("It's a draw!");
+                return;
+            }
+            
+            // Computer's turn
+            isThinking = true;
+            updateStatus("Computer is thinking...");
+            
+            // Add delay to simulate thinking - set a flag to prevent duplicate moves
+            setTimeout(() => {
+                if (!gameOver) {
+                    computerMove();
+                }
+                isThinking = false;
+            }, 700);
+        }
+        
+        // Computer makes a move
+        function computerMove() {
+            if (gameOver || !isThinking) return; // Only proceed if game is not over and we are in thinking state
+            
+            try {
+                // Get the best move - no additional thinking animation needed since we already have one from makeMove
+                const col = getBestMove();
+                completeComputerMove(col);
+            } catch (error) {
+                console.error("Error in computer move:", error);
+                // Fallback to random move if an error occurs
+                updateStatus("Computer encountered a problem. Making random move.");
+                const col = getRandomValidMove();
+                completeComputerMove(col);
+            }
+        }
+        
+        // Helper function to complete the computer's move
+        function completeComputerMove(col) {
+            const row = getLowestEmptyRow(col);
+            
+            // Check if move is valid (column not full)
+            if (row === -1) {
+                // Column is full, try another column
+                const validMoves = getValidMoves();
+                if (validMoves.length > 0) {
+                    const newCol = validMoves[0]; // Take the first valid move
+                    const newRow = getLowestEmptyRow(newCol);
+                    
+                    // Place computer's disc in the valid column
+                    board[newRow][newCol] = COMPUTER;
+                    updateCell(newRow, newCol, COMPUTER);
+                    
+                    // Check if computer wins
+                    if (checkWin(newRow, newCol, COMPUTER)) {
+                        gameOver = true;
+                        computerScore++;
+                        computerScoreElement.textContent = computerScore;
+                        updateStatus("Computer wins! Try again!");
+                        highlightWinningCells();
+                        return;
+                    }
+                } else {
+                    // No valid moves left - should be a draw
+                    gameOver = true;
+                    updateStatus("It's a draw!");
+                    return;
+                }
+            } else {
+                // Place computer's disc in the original column
+                board[row][col] = COMPUTER;
+                updateCell(row, col, COMPUTER);
+                
+                // Check if computer wins
+                if (checkWin(row, col, COMPUTER)) {
+                    gameOver = true;
+                    computerScore++;
+                    computerScoreElement.textContent = computerScore;
+                    updateStatus("Computer wins! Try again!");
+                    highlightWinningCells();
+                    return;
+                }
+            }
+            
+            // Check if board is full (draw)
+            if (isBoardFull()) {
+                gameOver = true;
+                updateStatus("It's a draw!");
+                return;
+            }
+            
+            // Back to player's turn
+            updateStatus("Your turn! Click a column to drop a disc.");
+        }
+        
+        // Find the lowest empty row in a column
+        function getLowestEmptyRow(col) {
+            for (let row = 0; row < ROWS; row++) {
+                if (board[row][col] === EMPTY) {
+                    return row;
+                }
+            }
+            return -1; // Column is full
+        }
+        
+        // Update the visual representation of a cell
+        function updateCell(row, col, player) {
+            const cells = document.querySelectorAll(`.cell[data-row="${row}"][data-col="${col}"]`);
+            if (cells.length > 0) {
+                cells[0].className = `cell player-${player}`;
+            }
+        }
+        
+        // Check if the board is full
+        function isBoardFull() {
+            return board.every(row => row.every(cell => cell !== EMPTY));
+        }
+        
+        // Update the status message
+        function updateStatus(message) {
+            statusElement.textContent = message;
+        }
+        
+        // Reset the game
+        newGameButton.addEventListener('click', initGame);
+        
+        // Check for a win condition
+        function checkWin(row, col, player) {
+            // Check horizontal
+            if (checkDirection(row, col, 0, 1, player) + checkDirection(row, col, 0, -1, player) - 1 >= CONNECT_N) {
+                return true;
+            }
+            
+            // Check vertical
+            if (checkDirection(row, col, 1, 0, player) + checkDirection(row, col, -1, 0, player) - 1 >= CONNECT_N) {
+                return true;
+            }
+            
+            // Check diagonal (top-left to bottom-right)
+            if (checkDirection(row, col, 1, 1, player) + checkDirection(row, col, -1, -1, player) - 1 >= CONNECT_N) {
+                return true;
+            }
+            
+            // Check diagonal (top-right to bottom-left)
+            if (checkDirection(row, col, 1, -1, player) + checkDirection(row, col, -1, 1, player) - 1 >= CONNECT_N) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // Check how many discs are connected in a direction
+        function checkDirection(row, col, rowDir, colDir, player) {
+            let count = 0;
+            let r = row;
+            let c = col;
+            
+            // Store winning positions for highlighting
+            const winningPositions = [];
+            
+            while (r >= 0 && r < ROWS && c >= 0 && c < COLS && board[r][c] === player) {
+                count++;
+                winningPositions.push({row: r, col: c});
+                r += rowDir;
+                c += colDir;
+            }
+            
+            // Save winning positions in a global variable for highlighting
+            if (count >= CONNECT_N) {
+                window.winningCells = winningPositions;
+            }
+            
+            return count;
+        }
+        
+        // Highlight winning cells with animation
+        function highlightWinningCells() {
+            if (window.winningCells) {
+                window.winningCells.forEach(pos => {
+                    const cells = document.querySelectorAll(`.cell[data-row="${pos.row}"][data-col="${pos.col}"]`);
+                    if (cells.length > 0) {
+                        cells[0].classList.add('winner-animation');
+                    }
+                });
+            }
+        }
+        
+        // AI SECTION: MINIMAX ALGORITHM WITH ALPHA-BETA PRUNING
+        
+        // Get the best move for the computer
+        function getBestMove() {
+            const difficulty = difficultySelect.value;
+            let depth;
+            
+            // Set search depth based on difficulty
+            switch (difficulty) {
+                case 'easy':
+                    // Random move with occasional better moves
+                    if (Math.random() < 0.7) {
+                        return getRandomValidMove();
+                    }
+                    depth = 2;
+                    break;
+                case 'medium':
+                    depth = 3;
+                    break;
+                case 'hard':
+                    depth = 5;
+                    break;
+                case 'expert':
+                    depth = 7;
+                    break;
+                default:
+                    depth = 3;
+            }
+            
+            let bestScore = -Infinity;
+            let bestCol = 0;
+            let validMoves = getValidMoves();
+            
+            // Prioritize the center column slightly
+            validMoves.sort((a, b) => {
+                return Math.abs(3 - a) - Math.abs(3 - b);
+            });
+            
+            // Try each valid column and evaluate using minimax
+            for (const col of validMoves) {
+                const row = getLowestEmptyRow(col);
+                if (row !== -1) {
+                    // Make the move
+                    board[row][col] = COMPUTER;
+                    
+                    // Evaluate the move using minimax
+                    const score = minimax(board, depth, -Infinity, Infinity, false);
+                    
+                    // Undo the move
+                    board[row][col] = EMPTY;
+                    
+                    // Update best move if this is better
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestCol = col;
+                    }
+                }
+            }
+            
+            return bestCol;
+        }
+        
+        // Get a list of valid moves (columns that aren't full)
+        function getValidMoves() {
+            const validMoves = [];
+            for (let col = 0; col < COLS; col++) {
+                if (getLowestEmptyRow(col) !== -1) {
+                    validMoves.push(col);
+                }
+            }
+            return validMoves;
+        }
+        
+        // Get a random valid move
+        function getRandomValidMove() {
+            const validMoves = getValidMoves();
+            return validMoves[Math.floor(Math.random() * validMoves.length)];
+        }
+        
+        // Minimax algorithm with alpha-beta pruning
+        function minimax(boardState, depth, alpha, beta, isMaximizing) {
+            // Terminal conditions
+            const winner = checkWinningState(boardState);
+            if (winner === COMPUTER) return 1000000; // Computer wins
+            if (winner === PLAYER) return -1000000; // Player wins
+            if (isBoardFullState(boardState) || depth === 0) return evaluateBoard(boardState);
+            
+            if (isMaximizing) {
+                let maxEval = -Infinity;
+                for (let col = 0; col < COLS; col++) {
+                    const row = getLowestEmptyRowState(boardState, col);
+                    if (row !== -1) {
+                        boardState[row][col] = COMPUTER;
+                        const eval = minimax(boardState, depth - 1, alpha, beta, false);
+                        boardState[row][col] = EMPTY;
+                        maxEval = Math.max(maxEval, eval);
+                        alpha = Math.max(alpha, eval);
+                        if (beta <= alpha) break; // Alpha-beta pruning
+                    }
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let col = 0; col < COLS; col++) {
+                    const row = getLowestEmptyRowState(boardState, col);
+                    if (row !== -1) {
+                        boardState[row][col] = PLAYER;
+                        const eval = minimax(boardState, depth - 1, alpha, beta, true);
+                        boardState[row][col] = EMPTY;
+                        minEval = Math.min(minEval, eval);
+                        beta = Math.min(beta, eval);
+                        if (beta <= alpha) break; // Alpha-beta pruning
+                    }
+                }
+                return minEval;
+            }
+        }
+        
+        // Check if the board state has a winner
+        function checkWinningState(boardState) {
+            // Check horizontal
+            for (let row = 0; row < ROWS; row++) {
+                for (let col = 0; col <= COLS - CONNECT_N; col++) {
+                    const player = boardState[row][col];
+                    if (player !== EMPTY) {
+                        let win = true;
+                        for (let i = 1; i < CONNECT_N; i++) {
+                            if (boardState[row][col + i] !== player) {
+                                win = false;
+                                break;
+                            }
+                        }
+                        if (win) return player;
+                    }
+                }
+            }
+            
+            // Check vertical
+            for (let row = 0; row <= ROWS - CONNECT_N; row++) {
+                for (let col = 0; col < COLS; col++) {
+                    const player = boardState[row][col];
+                    if (player !== EMPTY) {
+                        let win = true;
+                        for (let i = 1; i < CONNECT_N; i++) {
+                            if (boardState[row + i][col] !== player) {
+                                win = false;
+                                break;
+                            }
+                        }
+                        if (win) return player;
+                    }
+                }
+            }
+            
+            // Check diagonal (top-left to bottom-right)
+            for (let row = 0; row <= ROWS - CONNECT_N; row++) {
+                for (let col = 0; col <= COLS - CONNECT_N; col++) {
+                    const player = boardState[row][col];
+                    if (player !== EMPTY) {
+                        let win = true;
+                        for (let i = 1; i < CONNECT_N; i++) {
+                            if (boardState[row + i][col + i] !== player) {
+                                win = false;
+                                break;
+                            }
+                        }
+                        if (win) return player;
+                    }
+                }
+            }
+            
+            // Check diagonal (top-right to bottom-left)
+            for (let row = 0; row <= ROWS - CONNECT_N; row++) {
+                for (let col = CONNECT_N - 1; col < COLS; col++) {
+                    const player = boardState[row][col];
+                    if (player !== EMPTY) {
+                        let win = true;
+                        for (let i = 1; i < CONNECT_N; i++) {
+                            if (boardState[row + i][col - i] !== player) {
+                                win = false;
+                                break;
+                            }
+                        }
+                        if (win) return player;
+                    }
+                }
+            }
+            
+            return EMPTY; // No winner
+        }
+        
+        // Check if the board state is full
+        function isBoardFullState(boardState) {
+            return boardState.every(row => row.every(cell => cell !== EMPTY));
+        }
+        
+        // Find the lowest empty row in a column for a board state
+        function getLowestEmptyRowState(boardState, col) {
+            for (let row = 0; row < ROWS; row++) {
+                if (boardState[row][col] === EMPTY) {
+                    return row;
+                }
+            }
+            return -1; // Column is full
+        }
+        
+        // Evaluate the current board state
+        function evaluateBoard(boardState) {
+            let score = 0;
+            
+            // Check all possible 4-in-a-row combinations and assign scores
+            // Horizontal
+            score += evaluateLines(boardState, 0, 0, 0, 1);
+            
+            // Vertical
+            score += evaluateLines(boardState, 0, 0, 1, 0);
+            
+            // Diagonal (top-left to bottom-right)
+            score += evaluateLines(boardState, 0, 0, 1, 1);
+            
+            // Diagonal (top-right to bottom-left)
+            score += evaluateLines(boardState, 0, COLS - 1, 1, -1);
+            
+            // Favor center columns
+            for (let row = 0; row < ROWS; row++) {
+                for (let col = 0; col < COLS; col++) {
+                    if (boardState[row][col] === COMPUTER) {
+                        // More points for being in the center columns
+                        score += 3 - Math.abs(3 - col);
+                    }
+                }
+            }
+            
+            return score;
+        }
+        
+        // Evaluate lines (rows, columns, diagonals) for potential scoring
+        function evaluateLines(boardState, startRow, startCol, rowDir, colDir) {
+            let score = 0;
+            
+            // Get all possible lines of length CONNECT_N
+            for (let i = 0; i < ROWS - ((CONNECT_N - 1) * Math.abs(rowDir)) + (rowDir === 0 ? 1 : 0); i++) {
+                for (let j = 0; j < COLS - ((CONNECT_N - 1) * Math.abs(colDir)) + (colDir === 0 ? 1 : 0); j++) {
+                    let row = startRow + i;
+                    let col = startCol + j;
+                    let playerCount = 0;
+                    let computerCount = 0;
+                    let emptyCount = 0;
+                    
+                    // Count pieces in this line
+                    for (let k = 0; k < CONNECT_N; k++) {
+                        const r = row + k * rowDir;
+                        const c = col + k * colDir;
+                        
+                        if (boardState[r][c] === PLAYER) {
+                            playerCount++;
+                        } else if (boardState[r][c] === COMPUTER) {
+                            computerCount++;
+                        } else {
+                            emptyCount++;
+                        }
+                    }
+                    
+                    // Score this line
+                    score += scorePattern(computerCount, playerCount, emptyCount);
+                }
+            }
+            
+            return score;
+        }
+        
+        // Score a pattern based on the number of pieces
+        function scorePattern(computerCount, playerCount, emptyCount) {
+            let score = 0;
+            
+            // Computer is about to win
+            if (computerCount === 3 && emptyCount === 1) {
+                score += 1000;
+            }
+            // Computer has a good position
+            else if (computerCount === 2 && emptyCount === 2) {
+                score += 50;
+            }
+            // Computer has a start
+            else if (computerCount === 1 && emptyCount === 3) {
+                score += 10;
+            }
+            
+            // Block player from winning
+            if (playerCount === 3 && emptyCount === 1) {
+                score -= 900;
+            }
+            // Block player's good position
+            else if (playerCount === 2 && emptyCount === 2) {
+                score -= 40;
+            }
+            
+            return score;
+        }
+        
+        // Initialize the game
+        initGame();
+    </script>
+</body>
+</html>

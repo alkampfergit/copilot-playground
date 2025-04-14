@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #game {
+            margin-top: 20px;
+        }
+        .room {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <h1>Adventure Game</h1>
+    <div id="game">
+        <div id="room" class="room"></div>
+        <div id="actions">
+            <label for="command">Enter command:</label>
+            <input type="text" id="command" placeholder="e.g., go north">
+        </div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let adventure;
+        let inventory = [];
+        let visitedRooms = new Set();
+
+        // Load the adventure JSON
+        fetch('adventure.json')
+            .then(response => response.json())
+            .then(data => {
+                adventure = data;
+                initializeGame();
+            })
+            .catch(error => console.error('Error loading adventure:', error));
+
+        let currentRoomId = 1;
+
+        function initializeGame() {
+            displayRoom();
+            document.getElementById('command').addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    handleCommand();
+                }
+            });
+        }
+
+        function displayRoom() {
+            const room = adventure.rooms.find(r => r.id === currentRoomId);
+            visitedRooms.add(room.id);
+            const roomDiv = document.getElementById('room');
+            roomDiv.innerHTML = `
+                <h2>${room.name}</h2>
+                <p>${room.description}</p>
+                <p><strong>Items:</strong> ${room.items.join(', ') || 'None'}</p>
+                <p><strong>Connections:</strong> ${room.connections.map(c => c.direction).join(', ')}</p>
+            `;
+        }
+
+        function handleCommand() {
+            const commandInput = document.getElementById('command');
+            const command = commandInput.value.trim().toLowerCase();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            if (command.startsWith('go ')) {
+                const direction = command.split(' ')[1];
+                const room = adventure.rooms.find(r => r.id === currentRoomId);
+                const connection = room.connections.find(c => c.direction === direction);
+
+                if (connection) {
+                    if (connection.locked) {
+                        const requiredKey = connection.key_id;
+                        if (inventory.includes(requiredKey)) {
+                            outputDiv.innerHTML = `<p>You use the ${requiredKey} to unlock the door.</p>`;
+                            currentRoomId = connection.room_id;
+                            displayRoom();
+                        } else {
+                            outputDiv.innerHTML = `<p>The door is locked. You need the ${requiredKey} to open it.</p>`;
+                        }
+                    } else {
+                        currentRoomId = connection.room_id;
+                        displayRoom();
+                    }
+                } else {
+                    outputDiv.innerHTML = '<p>You cannot go that way.</p>';
+                }
+            } else if (command === 'look') {
+                displayRoom();
+            } else if (command.startsWith('take ')) {
+                const item = command.split(' ')[1];
+                const room = adventure.rooms.find(r => r.id === currentRoomId);
+
+                if (room.items.includes(item)) {
+                    room.items = room.items.filter(i => i !== item);
+                    inventory.push(item);
+                    outputDiv.innerHTML = `<p>You took the ${item}.</p>`;
+                    displayRoom();
+                } else {
+                    outputDiv.innerHTML = `<p>There is no ${item} here.</p>`;
+                }
+            } else if (command === 'inventory' || command === 'i') {
+                if (inventory.length > 0) {
+                    outputDiv.innerHTML = `<p><strong>Inventory:</strong> ${inventory.join(', ')}</p>`;
+                } else {
+                    outputDiv.innerHTML = '<p>Your inventory is empty.</p>';
+                }
+            } else if (command.startsWith('look ')) {
+                const item = command.split(' ')[1];
+                if (inventory.includes(item)) {
+                    const itemDescription = adventure.itemDescriptions[item] || 'It seems important.';
+                    outputDiv.innerHTML = `<p>You look at the ${item}. ${itemDescription}</p>`;
+                } else {
+                    outputDiv.innerHTML = `<p>You do not have a ${item} in your inventory.</p>`;
+                }
+            } else if (command === 'map') {
+                const visitedRoomConnections = Array.from(visitedRooms).map(id => {
+                    const room = adventure.rooms.find(r => r.id === id);
+                    if (room) {
+                        return room.connections
+                            .filter(c => visitedRooms.has(c.room_id))
+                            .map(c => `${room.name} -->|${c.direction}| ${adventure.rooms.find(r => r.id === c.room_id).name}`);
+                    }
+                    return [];
+                }).flat();
+
+                const mermaidDiagram = `graph TD\n${visitedRoomConnections.join('\n')}`;
+                outputDiv.innerHTML = `<div class="mermaid">${mermaidDiagram}</div>`;
+                mermaid.init();
+            } else {
+                outputDiv.innerHTML = '<p>Unknown command. Try "go <direction>", "look", "take <item>", "inventory", or "map".</p>';
+            }
+
+            commandInput.value = '';
+        }
+    </script>
+</body>
+</html>

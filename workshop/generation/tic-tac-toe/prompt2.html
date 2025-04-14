@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Tic Tac Toe</title>
+    <style>
+        :root {
+            --primary-color: #6C5CE7;
+            --secondary-color: #00CEC9;
+            --accent-color: #FD79A8;
+            --background-color: #F8F9FA;
+            --dark-text: #2D3436;
+            --light-text: #FFF;
+            --board-shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--dark-text);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+        
+        .status {
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            color: var(--dark-text);
+            text-align: center;
+            height: 30px;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+            aspect-ratio: 1/1;
+            box-shadow: 0 10px 30px var(--board-shadow);
+            border-radius: 15px;
+            padding: 15px;
+            background-color: white;
+        }
+        
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 4px 8px var(--board-shadow);
+            transition: all 0.2s ease-in-out;
+            aspect-ratio: 1/1;
+        }
+        
+        .cell:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--board-shadow);
+        }
+        
+        .x {
+            color: var(--primary-color);
+        }
+        
+        .o {
+            color: var(--secondary-color);
+        }
+        
+        .winning-cell {
+            background-color: rgba(108, 92, 231, 0.2);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            box-shadow: 0 4px 8px var(--board-shadow);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--board-shadow);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .difficulty-selector {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid var(--primary-color);
+            background: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        @media (max-width: 500px) {
+            .board {
+                max-width: 300px;
+            }
+            
+            .cell {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div class="status" id="status">Your turn (X)</div>
+    <div class="board" id="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <div class="controls">
+        <button id="reset-btn">New Game</button>
+    </div>
+    <div class="difficulty-selector">
+        <label for="difficulty">AI Difficulty:</label>
+        <select id="difficulty">
+            <option value="medium">Medium</option>
+            <option value="hard" selected>Hard (Unbeatable)</option>
+        </select>
+    </div>
+
+    <script>
+        // Game state
+        const state = {
+            board: Array(9).fill(''),
+            currentPlayer: 'X',
+            gameOver: false,
+            difficulty: 'hard',
+            winningCombo: null
+        };
+
+        // DOM elements
+        const boardElement = document.getElementById('board');
+        const cells = document.querySelectorAll('.cell');
+        const statusElement = document.getElementById('status');
+        const resetButton = document.getElementById('reset-btn');
+        const difficultySelector = document.getElementById('difficulty');
+
+        // Winning combinations
+        const winningCombos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]             // Diagonals
+        ];
+
+        // Initialize game
+        function initGame() {
+            state.board = Array(9).fill('');
+            state.currentPlayer = 'X';
+            state.gameOver = false;
+            state.winningCombo = null;
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o', 'winning-cell');
+            });
+            
+            updateStatus();
+        }
+
+        // Handle cell click
+        function handleCellClick(index) {
+            // Ignore if game is over or cell is already filled
+            if (state.gameOver || state.board[index] !== '') {
+                return;
+            }
+
+            // Player move
+            makeMove(index, state.currentPlayer);
+
+            // Check for win or draw
+            if (!checkGameEnd()) {
+                // Computer's turn
+                state.currentPlayer = 'O';
+                updateStatus();
+                
+                // Add a small delay for better UX
+                setTimeout(() => {
+                    makeComputerMove();
+                    checkGameEnd();
+                    state.currentPlayer = 'X';
+                    updateStatus();
+                }, 500);
+            }
+        }
+
+        // Make a move
+        function makeMove(index, player) {
+            state.board[index] = player;
+            cells[index].textContent = player;
+            cells[index].classList.add(player.toLowerCase());
+        }
+
+        // Check for win or draw
+        function checkGameEnd() {
+            // Check for win
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if (
+                    state.board[a] &&
+                    state.board[a] === state.board[b] &&
+                    state.board[a] === state.board[c]
+                ) {
+                    state.gameOver = true;
+                    state.winningCombo = combo;
+                    highlightWinningCombo(combo);
+                    updateStatus(`${state.board[a]} wins!`);
+                    return true;
+                }
+            }
+
+            // Check for draw
+            if (!state.board.includes('')) {
+                state.gameOver = true;
+                updateStatus("It's a draw!");
+                return true;
+            }
+
+            return false;
+        }
+
+        // Highlight winning cells
+        function highlightWinningCombo(combo) {
+            combo.forEach(index => {
+                cells[index].classList.add('winning-cell');
+            });
+        }
+
+        // Update game status display
+        function updateStatus(message) {
+            statusElement.textContent = message || 
+                (state.gameOver ? '' : `${state.currentPlayer === 'X' ? 'Your' : "Computer's"} turn (${state.currentPlayer})`);
+        }
+
+        // Computer move using minimax algorithm
+        function makeComputerMove() {
+            if (state.gameOver) return;
+            
+            let index;
+            const difficulty = state.difficulty;
+            
+            if (difficulty === 'hard') {
+                // Use minimax algorithm for hard difficulty
+                index = getBestMove();
+            } else {
+                // For medium difficulty, sometimes make mistakes
+                if (Math.random() < 0.3) {
+                    const emptyCells = state.board
+                        .map((cell, i) => cell === '' ? i : null)
+                        .filter(i => i !== null);
+                    index = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                } else {
+                    index = getBestMove();
+                }
+            }
+            
+            if (index !== null) {
+                makeMove(index, 'O');
+            }
+        }
+
+        // Minimax algorithm to find the best move
+        function getBestMove() {
+            let bestScore = -Infinity;
+            let bestMove = null;
+            
+            // Try each available move
+            for (let i = 0; i < state.board.length; i++) {
+                if (state.board[i] === '') {
+                    state.board[i] = 'O'; // Try this move
+                    let score = minimax(state.board, 0, false);
+                    state.board[i] = ''; // Undo the move
+                    
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    }
+                }
+            }
+            
+            return bestMove;
+        }
+
+        // Minimax algorithm for decision making
+        function minimax(board, depth, isMaximizing) {
+            // Check for terminal states (win/lose/draw)
+            const result = checkWinner(board);
+            
+            if (result !== null) {
+                return result === 'O' ? 10 - depth : 
+                       result === 'X' ? depth - 10 : 0;
+            }
+            
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === '') {
+                        board[i] = 'O';
+                        let score = minimax(board, depth + 1, false);
+                        board[i] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === '') {
+                        board[i] = 'X';
+                        let score = minimax(board, depth + 1, true);
+                        board[i] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        // Helper function to check winner for the minimax algorithm
+        function checkWinner(board) {
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if (
+                    board[a] &&
+                    board[a] === board[b] &&
+                    board[a] === board[c]
+                ) {
+                    return board[a];
+                }
+            }
+            
+            return board.includes('') ? null : 'draw';
+        }
+
+        // Event listeners
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = parseInt(cell.dataset.index);
+                handleCellClick(index);
+            });
+        });
+
+        resetButton.addEventListener('click', initGame);
+        
+        difficultySelector.addEventListener('change', (e) => {
+            state.difficulty = e.target.value;
+            initGame();
+        });
+
+        // Initialize the game
+        initGame();
+    </script>
+</body>
+</html>
