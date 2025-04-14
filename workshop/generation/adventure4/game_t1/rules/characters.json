@@ -1,0 +1,15 @@
+{
+  "characteristics": [
+    { "name": "Strength", "description": "Determines physical power and the ability to use certain weapons.", "range": "1-10" },
+    { "name": "Intelligence", "description": "Affects the ability to cast spells and solve puzzles.", "range": "1-10" },
+    { "name": "Dexterity", "description": "Influences agility, speed, and accuracy.", "range": "1-10" },
+    { "name": "Charisma", "description": "Impacts interactions with NPCs and persuasion attempts.", "range": "1-10" },
+    { "name": "Endurance", "description": "Determines stamina and resistance to damage.", "range": "1-10" }
+  ],
+  "healthPointsFormula": "(Strength × 2) + Endurance",
+  "additionalRules": [
+    "Characters with higher intelligence can learn more spells.",
+    "Dexterity affects the success rate of dodging attacks.",
+    "Charisma influences the likelihood of NPCs providing assistance."
+  ]
+}

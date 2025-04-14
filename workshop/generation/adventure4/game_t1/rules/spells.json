@@ -1,0 +1,29 @@
+{
+  "spells": [
+    {
+      "name": "Fireball",
+      "effect": "Deals 10-15 fire damage to a single target.",
+      "manaCost": 8
+    },
+    {
+      "name": "Heal",
+      "effect": "Restores 10 health points to a single target.",
+      "manaCost": 5
+    },
+    {
+      "name": "Lightning Bolt",
+      "effect": "Deals 12-18 lightning damage to a single target.",
+      "manaCost": 10
+    },
+    {
+      "name": "Shield",
+      "effect": "Reduces incoming damage by 50% for 10 seconds.",
+      "manaCost": 6
+    },
+    {
+      "name": "Teleport",
+      "effect": "Instantly moves the player to a nearby location.",
+      "manaCost": 7
+    }
+  ]
+}

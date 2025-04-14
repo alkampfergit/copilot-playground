@@ -1,0 +1,29 @@
+{
+  "magicalItems": [
+    {
+      "name": "Ring of Strength",
+      "effect": "Increases Strength by 2 points.",
+      "usage": "Passive effect while equipped."
+    },
+    {
+      "name": "Amulet of Wisdom",
+      "effect": "Increases Intelligence by 3 points.",
+      "usage": "Passive effect while equipped."
+    },
+    {
+      "name": "Cloak of Invisibility",
+      "effect": "Grants temporary invisibility for 10 seconds.",
+      "usage": "Can be activated once per combat."
+    },
+    {
+      "name": "Boots of Speed",
+      "effect": "Increases movement speed by 20%.",
+      "usage": "Passive effect while equipped."
+    },
+    {
+      "name": "Wand of Fire",
+      "effect": "Casts a fireball dealing 10-15 damage.",
+      "usage": "Can be used once per combat."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { processVerbs } = require('./modules/verbs').default;
+const { processVerbs } = require('./modules/verbs');
 const { processCharacters } = require('./modules/characters');
 const { processCharacterClasses } = require('./modules/characterClasses');
 const { processItems } = require('./modules/items');

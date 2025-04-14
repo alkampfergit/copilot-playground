@@ -1,0 +1,14 @@
+{
+  "verbs": [
+    { "name": "move", "description": "Allows the player to move to a different location in the game world." },
+    { "name": "look", "description": "Provides a description of the current surroundings or a specific object." },
+    { "name": "take", "description": "Picks up an item and adds it to the player's inventory." },
+    { "name": "drop", "description": "Removes an item from the player's inventory and places it in the current location." },
+    { "name": "use", "description": "Uses an item in the player's inventory, triggering its effect." },
+    { "name": "attack", "description": "Engages in combat with an enemy or object." },
+    { "name": "defend", "description": "Reduces damage taken during combat." },
+    { "name": "talk", "description": "Initiates a conversation with a non-player character (NPC)." },
+    { "name": "cast", "description": "Casts a spell if the player has learned it." },
+    { "name": "inspect", "description": "Provides detailed information about an object or character." }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "name": "Healing Potion",
+      "description": "Restores 20 health points.",
+      "usage": "Can be used during or outside combat."
+    },
+    {
+      "name": "Mana Potion",
+      "description": "Restores 15 mana points.",
+      "usage": "Can be used during or outside combat."
+    },
+    {
+      "name": "Torch",
+      "description": "Illuminates dark areas.",
+      "usage": "Useful in caves or at night."
+    },
+    {
+      "name": "Rope",
+      "description": "Can be used to climb or tie objects.",
+      "usage": "Essential for exploration."
+    },
+    {
+      "name": "Backpack",
+      "description": "Increases inventory capacity.",
+      "usage": "Allows the player to carry more items."
+    }
+  ]
+}

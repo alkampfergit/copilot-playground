@@ -1,0 +1,38 @@
+{
+  "weapons": {
+    "attack": [
+      {
+        "name": "Sword",
+        "damageRange": "5-10",
+        "minimumStrength": 5,
+        "restrictions": ["Warrior", "Rogue"]
+      },
+      {
+        "name": "Bow",
+        "damageRange": "3-8",
+        "minimumStrength": 4,
+        "restrictions": ["Rogue"]
+      },
+      {
+        "name": "Staff",
+        "damageRange": "2-6",
+        "minimumStrength": 2,
+        "restrictions": ["Mage", "Cleric"]
+      }
+    ],
+    "defense": [
+      {
+        "name": "Shield",
+        "damageReduction": "3-7",
+        "minimumStrength": 6,
+        "restrictions": ["Warrior", "Cleric"]
+      },
+      {
+        "name": "Magic Barrier",
+        "damageReduction": "4-8",
+        "minimumStrength": 3,
+        "restrictions": ["Mage"]
+      }
+    ]
+  }
+}
