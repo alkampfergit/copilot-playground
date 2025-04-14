@@ -1,1 +1,1 @@
-Please follow the instruction in prompt.md to generate specifications for the game. Proceed step by stes
+Please follow the instruction in prompt.md to generate specifications for the game. Proceed step by step

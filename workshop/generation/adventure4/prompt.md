@@ -2,18 +2,9 @@ You will need to generate a detailed specifications for a textual adventure game
 
 The overall ambience of the game is a fantasy world with magic and mythical creatures. 
 
-# part one: generate game rule
+# part one: generate game rule files
 
-a list of possible verbs that are allowed in the adventure.
-
-1. verb to move in the adventure
-2. verb to interact with the environment
-3. verb to interact with the characters
-4. verb to interact with the objects
-5. verb to interact with the inventory
-6. verb to handle fighting
-7. verb to handle magic
-8. verb to handle items
+A dotted list of possible verbs that are allowed in the adventure for each verb a description of what it does. You should include verbs that allow the player to move as well as verb to interact with environmenent
 
 then you will generate all the rules for the character and the non player characters of the game, such as strength, intelligence etc. For each characteristic the range will be 1-10. Each player has a number of health points based on some of that characteristics. Please note down some rule to determine health points based on the characteristics.
 
