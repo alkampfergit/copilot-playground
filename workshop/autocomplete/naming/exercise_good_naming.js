@@ -2,6 +2,7 @@
 function calculateRectangleProperties(
   rectangleLength, 
   rectangleWidth) {
+    
 
 }
 
