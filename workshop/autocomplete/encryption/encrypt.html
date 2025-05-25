@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt</title>
+    
+    <!--I want to create a simple page that allows a password, and a text to be 
+    entered. Then a couple of buttons encrypt and decrypt. Pressing one of them
+    should respectively encrypt and decrypt the text. Encrypted text is output in 
+    textarea encoded as base64-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script>
+        function encrypt() {
+            var password = document.getElementById("password").value;
+            var text = document.getElementById("text").value;
+            var encrypted = CryptoJS.AES.encrypt(text, password);
+            document.getElementById("output").value = encrypted.toString();
+        }
+
+        function decrypt() {
+            var password = document.getElementById("password").value;
+            var encryptedText = document.getElementById("output").value;
+            var decrypted = CryptoJS.AES.decrypt(encryptedText, password);
+            var originalText = decrypted.toString(CryptoJS.enc.Utf8);
+            document.getElementById("text").value = originalText;
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        h3 {
+            color: #777;
+        }
+        h4 {
+            color: #999;
+        }
+        h5 {
+            color: #aaa;
+        }
+        h6 {
+            color: #bbb;
+        }
+        p {
+            color: #444;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-container button {
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encrypt and Decrypt</h1>
+        <h2>Enter Password</h2>
+        <input type="password" id="password" placeholder="Enter password" required>
+        
+        <h2>Enter Text</h2>
+        <textarea id="text" placeholder="Enter text to encrypt/decrypt"></textarea>
+        
+        <div class="button-container">
+            <button onclick="encrypt()">Encrypt</button>
+            <button onclick="decrypt()">Decrypt</button>
+        </div>
+
+        <h2>Output</h2>
+        <textarea id="output" placeholder="Encrypted/Decrypted text will appear here"></textarea>
+    </div>
+</body>
+<script>
+    // Optional: Add event listeners to buttons for better UX
+    document.querySelector('button[onclick="encrypt()"]').addEventListener('click', function() {
+        this.blur(); // Remove focus from button after click
+    });
+    document.querySelector('button[onclick="decrypt()"]').addEventListener('click', function() {
+        this.blur(); // Remove focus from button after click
+    });
+</script>
+</body> 
+</html>
